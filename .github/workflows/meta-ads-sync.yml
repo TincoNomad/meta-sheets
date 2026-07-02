@@ -5,6 +5,11 @@ on:
     # 12:00 UTC = 7:00 AM Peru (UTC-5)
     - cron: "0 12 * * *"
   workflow_dispatch:
+    inputs:
+      test_sheet:
+        description: "Write a test row to verify sheet access"
+        type: boolean
+        default: false
 
 jobs:
   sync:
@@ -15,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -q -r requirements.txt
-      - run: python main.py
+      - run: python main.py ${{ inputs.test_sheet && '--test-sheet' || '' }}
         env:
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_AD_ACCOUNT_ID: ${{ secrets.META_AD_ACCOUNT_ID }}

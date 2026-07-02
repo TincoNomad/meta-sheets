@@ -1,7 +1,9 @@
 .env
+google-creds.json
+meta-sheet-test-*.json
+credentials*.json
 __pycache__/
 *.pyc
 *.pyo
-credentials*.json
 venv/
 .venv/
