@@ -42,7 +42,6 @@ def main():
     meta_token = os.environ.get("META_ACCESS_TOKEN")
     ad_account_id = os.environ.get("META_AD_ACCOUNT_ID")
     sheet_id = os.environ.get("GOOGLE_SHEET_ID")
-    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
     creds_file = os.environ.get("GOOGLE_CREDENTIALS_FILE")
 
     missing = [
@@ -59,8 +58,8 @@ def main():
     google_missing = []
     if not sheet_id:
         google_missing.append("GOOGLE_SHEET_ID")
-    if not creds_json and not creds_file:
-        google_missing.append("GOOGLE_CREDENTIALS_JSON or GOOGLE_CREDENTIALS_FILE")
+    if not creds_file:
+        google_missing.append("GOOGLE_CREDENTIALS_FILE")
     if google_missing:
         log.error("[ENV] ❌ Missing required Google vars: %s", ", ".join(google_missing))
         sys.exit(1)
@@ -70,11 +69,8 @@ def main():
     # --- Connect to Google Sheets (always needed) ---
     log.info("[GOOGLE] 🔄 Connecting to Sheets ...")
     try:
-        if creds_json:
-            creds_dict = json.loads(creds_json)
-        else:
-            with open(creds_file) as f:
-                creds_dict = json.load(f)
+        with open(creds_file) as f:
+            creds_dict = json.load(f)
         creds = Credentials.from_service_account_info(
             creds_dict,
             scopes=["https://www.googleapis.com/auth/spreadsheets"],

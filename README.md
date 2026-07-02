@@ -9,18 +9,9 @@ Script diario que extrae insights de Meta Ads y los escribe en un Google Sheet.
 | `META_ACCESS_TOKEN` | Token de acceso de Meta (system user, larga duración) con permiso `ads_read` |
 | `META_AD_ACCOUNT_ID` | ID de la ad account (solo números, sin `act_`) |
 | `GOOGLE_SHEET_ID` | ID del Google Sheet (`docs.google.com/spreadsheets/d/<ID>/edit`) |
-| `GOOGLE_CREDENTIALS_JSON` | JSON completo del Service Account de Google, en **una sola línea** |
+| `GOOGLE_CREDENTIALS_JSON` | JSON completo del Service Account de Google (puede tener varias líneas) |
 
-### Cómo configurar GOOGLE_CREDENTIALS_JSON en GitHub
-
-El JSON descargado de GCP tiene muchas líneas. GitHub Secrets necesita todo en **una sola línea**:
-
-```bash
-# desde la raíz del proyecto — minifica a 1 línea y copia al clipboard
-jq -c . google-creds.json | pbcopy
-```
-
-Luego en GitHub: **Settings → Secrets and variables → Actions → New repository secret** → pegar.
+El workflow escribe `GOOGLE_CREDENTIALS_JSON` a un archivo `google-creds.json`. No necesitas minificarlo a una sola línea.
 
 ## Cómo conseguir cada secret
 
@@ -79,3 +70,5 @@ El cron corre a las 12:00 UTC (7:00 AM Perú). Para correrlo manualmente:
 1. GitHub → pestaña **Actions**
 2. Click en **Meta Ads → Google Sheets Sync**
 3. Botón **Run workflow** → **Run workflow**
+
+En GitHub Actions, `GOOGLE_CREDENTIALS_JSON` se escribe a `google-creds.json` automáticamente. No necesitas configuración extra.
