@@ -9,9 +9,15 @@ Script diario que extrae insights de Meta Ads y los escribe en un Google Sheet.
 | `META_ACCESS_TOKEN` | Token de acceso de Meta (system user, larga duración) con permiso `ads_read` |
 | `META_AD_ACCOUNT_ID` | ID de la ad account (solo números, sin `act_`) |
 | `GOOGLE_SHEET_ID` | ID del Google Sheet (`docs.google.com/spreadsheets/d/<ID>/edit`) |
-| `GOOGLE_CREDENTIALS_JSON` | JSON completo del Service Account de Google (puede tener varias líneas) |
+| `GOOGLE_CREDENTIALS_JSON` | JSON del Service Account codificado en base64 |
 
-El workflow escribe `GOOGLE_CREDENTIALS_JSON` a un archivo `google-creds.json`. No necesitas minificarlo a una sola línea.
+Para generar el valor del secret:
+```bash
+# desde la raíz del proyecto
+base64 -i meta-sheet-test-d9d0197a6fdf.json | pbcopy
+# o con Python (más universal):
+python3 -c "import base64; print(base64.b64encode(open('meta-sheet-test-d9d0197a6fdf.json','rb').read()).decode())" | pbcopy
+```
 
 ## Cómo conseguir cada secret
 
