@@ -21,10 +21,9 @@ jobs:
           python-version: "3.12"
       - run: pip install -q -r requirements.txt
       - name: Write Google credentials file
-        run: |
-          cat > google-creds.json << 'EOF'
-          ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-          EOF
+        env:
+          CREDS: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: printf '%s\n' "$CREDS" > google-creds.json
       - run: python main.py ${{ inputs.test_sheet && '--test-sheet' || '' }}
         env:
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
